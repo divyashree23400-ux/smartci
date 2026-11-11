@@ -1,18 +1,13 @@
-name: CI
-on: [push, pull_request]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
+      - name: Select tests
+        id: select
+        run: |
+          BASE="${{ github.event.before }}"
+          if [ -z "$BASE" ] || [ "$BASE" = "0000000000000000000000000000000000000000" ]; then BASE=HEAD~1; fi
+          TESTS=$(python scripts/select_tests.py $BASE)
+          echo "Selected tests: $TESTS"
+          echo "tests=$TESTS" >> $GITHUB_OUTPUT
       - name: Run tests
         run: |
           set -o pipefail
-          pytest 2>&1 | tee build.log
+          if [ -z "${{ steps.select.outputs.tests }}" ]; then echo "No tests needed for this change"; exit 0; fi
+          pytest ${{ steps.select.outputs.tests }} 2>&1 | tee build.log
