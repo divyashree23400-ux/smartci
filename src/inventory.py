@@ -8,4 +8,4 @@ class Inventory:
     def remove_stock(self, name, qty):
         if self.stock.get(name, 0) < qty:
             raise ValueError('not enough stock')
-        self.stock[name] -= qty
+        self.stock[name] -= qty# inventory change
