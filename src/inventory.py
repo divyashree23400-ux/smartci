@@ -10,3 +10,4 @@ class Inventory:
             raise ValueError('not enough stock')
         self.stock[name] -= qty# inventory change
 # second inventory change
+# routing test 4
