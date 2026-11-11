@@ -4,4 +4,4 @@ def apply_discount(price, percent):
     return round(price * (1 - percent / 100), 2)
 
 def add_tax(price, rate=0.18):
-    return round(price * (1 + rate), 2)
+    return round(price * (1 + rate), 2)# pricing change for routing test
